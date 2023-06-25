@@ -5,6 +5,9 @@ from alzheimer_disease.constant.training_pipeline import *
 
 
 
+
+
+
 TIMESTAMP: str = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 
 @dataclass
@@ -29,6 +32,20 @@ class DataIngestionConfig:
     database_name : str = DATA_BASE_NAME
     train_collection_name : str = TRAIN_COLLECTION_NAME
     test_collection_name : str = TEST_COLLECTION_NAME
+
+
+
+
+@dataclass
+class DataValidationConfig:
+    data_validation_dir: str = os.path.join(
+        training_pipeline_config.artifacts_dir, DATA_VALIDATION_DIR_NAME
+    )
+
+    valid_status_file_dir: str = os.path.join(data_validation_dir, DATA_VALIDATION_STATUS_FILE)
+
+    required_file_list = DATA_VALIDATION_ALL_REQUIRED_FILES
+
     
     
 

@@ -5,12 +5,10 @@ from dotenv import load_dotenv
 from pathlib import Path
 from alzheimer_disease.logger import logging
 from alzheimer_disease.exception import AlzException
-import os
+import logging
 import random
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
-import os
-import random
 import shutil
 import sys
 load_dotenv()
@@ -73,10 +71,6 @@ def process_folder(folder_path, db, collection_name):
                 image_collection = db.get_collection(collection_name)
                 image_collection.insert_one(document)
 
-import os
-import logging
-from pymongo import MongoClient
-from pathlib import Path
 
 
 def get_data_from_mongodb(database_name, train_collection_name, test_collection_name, output_folder_path):
@@ -148,7 +142,7 @@ def get_data_from_mongodb(database_name, train_collection_name, test_collection_
         return str(train_folder_path), str(test_folder_path)
     except Exception as e:
         logging.exception("Failed to retrieve data from MongoDB and save as JPEG files.")
-        raise AlzException(e)
+        raise AlzException(e,sys)
 
 
 

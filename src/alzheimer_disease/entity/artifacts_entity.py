@@ -7,4 +7,10 @@ from pathlib import Path
 class DataIngestionArtifact:
     train_path:str
     test_path:str
-    
+
+
+@dataclass
+class DataValidationArtifact:
+    validation_status: bool
+
+
