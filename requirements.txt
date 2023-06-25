@@ -13,6 +13,7 @@ joblib
 types-PyYAML
 scipy
 Flask
+scikit-learn
 Flask-Cors
 pymongo
--e .
+#-e .
