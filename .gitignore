@@ -130,3 +130,5 @@ dmypy.json
 alzenv/
 data/
 artifacts/
+checkpoints/
+models/
