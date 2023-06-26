@@ -1,4 +1,5 @@
 import os
+import tensorflow as tf
 
 ARTIFACTS_DIR: str = "artifacts"
 
@@ -27,28 +28,39 @@ Data Validation realted contant start with DATA_VALIDATION VAR NAME
 """
 
 DATA_VALIDATION_DIR_NAME: str = "data_validation"
-
 DATA_VALIDATION_STATUS_FILE = 'status.txt'
-
 DATA_VALIDATION_ALL_REQUIRED_FILES = ["train", "test"]
 
 
 
+
 """
-MODEL TRAINER related constant start with MODEL_TRAINER var name
+Data Transformation related constant start with MODEL_TRAINER var name
 """
 MODEL_TRAINER_DIR_NAME: str = "model_trainer"
+MODEL_TRAINER_FEATURE_STORE_DIR: str = "feature_store"
+MODEL_NAME :str = "alzeimer_model.h5"
+MODEL_TRAINER_BATCH_SIZE : int = 32
+MODEL_TRAINER_EPOCHS : int = 1
+MODEL_CHECKPOINT_DIR_NAME: str =  "checkpoints"
+IMAGE_SIZE: tuple = (256, 256)
+CHANNELS: int = 3
+INPUT_SHAPE: tuple = (IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
+CLASSES:int = 5
+VALIDATION_SPLIT: int = 0.2
+OPTIMIZER: str = "adam"
+PATIENCE :int = 10
+MODEL_TEST = "Tensorflow_test"
+EXPECTED_SCORE_THRESHOLD : float = 0.1
+PREDICTION_REPORT:str = 'evaluation_results.json'
+OVERFITTING_THRESHOLD :float = 0.30
 
-MODEL_TRAINER_PRETRAINED_WEIGHT_NAME: str = "yolov5s.pt"
 
-MODEL_TRAINER_NO_EPOCHS: int = 1
 
-MODEL_TRAINER_BATCH_SIZE: int = 16
 
 
 
 """
 MODEL PUSHER related constant start with MODEL_PUSHER var name
 """
-BUCKET_NAME = "sign-lang-23"
-S3_MODEL_NAME = "best.pt"
+CHANGE_THRESHOLD: float = 0.05

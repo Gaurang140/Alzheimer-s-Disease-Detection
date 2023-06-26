@@ -47,12 +47,42 @@ class DataValidationConfig:
     required_file_list = DATA_VALIDATION_ALL_REQUIRED_FILES
 
     
-    
-
-    
 
 
+@dataclass
+class ModelTrainerConfig:
+    model_trainer_dir: str = os.path.join(
+        training_pipeline_config.artifacts_dir, MODEL_TRAINER_DIR_NAME)
+
+    model_save: str = os.path.join(model_trainer_dir, MODEL_NAME)
+    batch_size : int = MODEL_TRAINER_BATCH_SIZE
+    epochs : int = MODEL_TRAINER_EPOCHS
+    checkpoint_dir: str = os.path.join(model_trainer_dir, MODEL_CHECKPOINT_DIR_NAME)
+    image_size: int = IMAGE_SIZE
+    channels: int = CHANNELS
+    input_shape: tuple = INPUT_SHAPE
+    classes: int = CLASSES
+    validation_split: int = VALIDATION_SPLIT
+    optimizer: str = OPTIMIZER
+    patience: int = PATIENCE
+    test_save_dir: str = os.path.join(model_trainer_dir, MODEL_TEST)
+    expected_score_threshold: float = EXPECTED_SCORE_THRESHOLD
+    overfitting_threshold: float = OVERFITTING_THRESHOLD
+    prediction_results_report_dir: str = os.path.join(model_trainer_dir, PREDICTION_REPORT)
+
+
+@dataclass
+class ModelEvaluationConfig:
+        change_threshold :float = CHANGE_THRESHOLD
 
 
 
-  
+
+
+@dataclass
+class ModelPusherConfig:
+        model_pusher_dir = os.path.join(training_pipeline_config.artifacts_dir , "model_pusher")
+        saved_model_dir = os.path.join("saved_models")
+        pusher_model_dir = os.path.join(model_pusher_dir,"saved_models")
+        pusher_model_path = os.path.join(pusher_model_dir,MODEL_NAME)
+        

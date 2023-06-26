@@ -3,3 +3,13 @@
 
 # Objective
 * The main objective is to detect Alzheimer's disease and mild cognitive impairment early through the proposed CNN network approach, which retrieves features from brain MRI data to differentiate between healthy cognition, clinical diagnosed AD, and MCI, and identifying the patterns of MRI brain changes that characterize AD and MCI.
+
+
+
+#workflow
+fatch data from mongodb 
+create split train and test
+validation of the data
+model training
+model evaluation
+model pusher in production

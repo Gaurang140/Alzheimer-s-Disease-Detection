@@ -1,4 +1,5 @@
 import os
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
@@ -6,11 +7,18 @@ from pathlib import Path
 from alzheimer_disease.logger import logging
 from alzheimer_disease.exception import AlzException
 import logging
+import tensorflow as tf
+import sys
+import ssl
 import random
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 import shutil
 import sys
+import json
+from sklearn.metrics import classification_report
+import certifi
+import base64
 load_dotenv()
 # Get the MongoDB connection URI from the environment variable
 
@@ -88,7 +96,7 @@ def get_data_from_mongodb(database_name, train_collection_name, test_collection_
     """
     try:
         # Connect to MongoDB server
-        client = MongoClient(os.getenv("uri"))
+        client = MongoClient(os.getenv("uri"), tlsCAFile=certifi.where())
         db = client.get_database(database_name)
 
         # Convert output_folder_path to Path object if it's a string
@@ -149,5 +157,202 @@ def get_data_from_mongodb(database_name, train_collection_name, test_collection_
 
 
 
+def create_datasets(train_path, test_path, image_size, batch_size, validation_split,test_save_path):
+    """
+    Create training, validation, and test datasets from the specified directories.
+
+    Args:
+        train_path (str): Path to the directory containing the training images.
+        test_path (str): Path to the directory containing the test images.
+        image_size (tuple): Size of the input images in the format (height, width).
+        batch_size (int): Batch size for the datasets.
+        validation_split (float): Fraction of the training data to be used for validation.
+
+    Returns:
+        train_ds (tf.data.Dataset): Training dataset.
+        val_ds (tf.data.Dataset): Validation dataset.
+        test_ds (tf.data.Dataset): Test dataset.
+        class_names (list): List of class names in the dataset.
+    """
+    # Define the resize and rescale transformations
+   
+
+    # Create training dataset with validation split
+    train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
+        train_path,
+        seed=12,
+        shuffle=True,
+        image_size=image_size,
+        batch_size=batch_size,
+        validation_split=validation_split,
+        subset="training"
+    )
+
+    # Create validation dataset with validation split
+    validation_dataset = tf.keras.preprocessing.image_dataset_from_directory(
+        train_path,
+        seed=12,
+        shuffle=True,
+        image_size=image_size,
+        batch_size=batch_size,
+        validation_split=validation_split,
+        subset="validation"
+    )
+
+    # Create test dataset
+    test_dataset = tf.keras.preprocessing.image_dataset_from_directory(
+        test_path,
+        seed=12,
+        shuffle=True,
+        image_size=image_size,
+        batch_size=batch_size
+    )
+
+    # Get the class names from the training dataset
+    class_names = train_dataset.class_names
+
+    resize_and_rescale = tf.keras.Sequential([
+        tf.keras.layers.Resizing(image_size[0], image_size[1]),
+        tf.keras.layers.Rescaling(1./255)
+    ])
+
+      # Preprocess and cache the training dataset
+    train_ds = train_dataset.map(lambda x, y: (resize_and_rescale(x), y)).cache().shuffle(1000).prefetch(buffer_size=tf.data.AUTOTUNE)
+    
+    # Preprocess and cache the validation dataset
+    val_ds = validation_dataset.map(lambda x, y: (resize_and_rescale(x), y)).cache().shuffle(1000).prefetch(buffer_size=tf.data.AUTOTUNE)
+
+# Preprocess and cache the test dataset
+    test_ds = test_dataset.map(lambda x, y: (resize_and_rescale(x), y)).cache().shuffle(1000).prefetch(buffer_size=tf.data.AUTOTUNE)
+
+    #tf.data.Dataset.save(test_ds, test_save_path)
+
+    return train_ds, val_ds, test_ds, class_names
 
 
+
+def create_callbacks(checkpoint_filepath, patience):
+    """
+    Create callbacks for model checkpoint and early stopping.
+
+    Returns:
+        callbacks (list): List of callbacks.
+    """
+    
+    
+    model_checkpoint_callback = ModelCheckpoint(
+        filepath=checkpoint_filepath,
+        save_weights_only=False,
+        frequency='epoch',
+        monitor='val_accuracy',
+        save_best_only=True,
+        verbose=1
+    )
+    
+    early_stopping_callback = EarlyStopping(
+        monitor='val_loss',
+        patience=patience,
+        verbose=1
+    )
+    
+    callbacks = [model_checkpoint_callback, early_stopping_callback]
+    
+    return callbacks
+
+
+
+
+
+def evaluate_model(model, test_ds, class_names, output_file, expected_score, overfitting_threshold):
+    """
+    Evaluate the trained model on the test dataset and generate evaluation metrics.
+
+    Args:
+        model (tf.keras.Model): Trained model.
+        test_ds (tf.data.Dataset): Test dataset.
+        class_names (list): List of class names.
+        output_file (str): File path for saving the evaluation results.
+        expected_score (float): Expected accuracy score.
+        overfitting_threshold (float): Threshold for detecting overfitting.
+
+    Returns:
+        None
+    """
+    # Make predictions on the test dataset
+    y_true = []
+    y_pred = []
+    for images, labels in test_ds:
+        predictions = model.predict(images)
+        predicted_labels = tf.argmax(predictions, axis=1).numpy()
+        y_true.extend(labels.numpy())
+        y_pred.extend(predicted_labels)
+
+    # Generate classification report
+    report = classification_report(y_true, y_pred, target_names=class_names, output_dict=True)
+
+    # Save the evaluation results as JSON
+    with open(output_file, 'w') as f:
+        json.dump(report, f)
+
+    # Print the evaluation report
+    print("Evaluation results:")
+    print(json.dumps(report, indent=4))
+
+    # Calculate f1 scores
+    f1_train_score = report["weighted avg"]["f1-score"]
+    f1_test_score = report["macro avg"]["f1-score"]
+
+    # Log train and test scores
+    logging.info(f"Train score: {f1_train_score} and test score: {f1_test_score}")
+
+    # Check for overfitting or underfitting or expected score
+    logging.info("Checking if the model is underfitting or not")
+    if f1_test_score < expected_score:
+        raise Exception(f"Model is not good as it is not able to give the expected accuracy: "
+                        f"expected score: {expected_score}, model actual score: {f1_test_score}")
+
+    logging.info("Checking if the model is overfitting or not")
+    diff = abs(f1_train_score - f1_test_score)
+
+    if diff > overfitting_threshold:
+        raise Exception(f"Train and test score difference: {diff} is more than the overfitting threshold: "
+                        f"{overfitting_threshold}")
+
+
+
+def save_object(file_path: str, obj: object) -> None:
+    try:
+        logging.info("Entered the save_object method of utils")
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        if isinstance(obj, tf.keras.Model):
+            obj.save(file_path)
+     
+        logging.info("Exited the save_object method of utils")
+    except Exception as e:
+        raise AlzException(e, sys)
+    
+
+
+def load_object(file_path: str) -> object:
+    try:
+        logging.info("Entered the load_object method of utils")
+        if file_path.endswith(".h5"):
+            obj = tf.keras.models.load_model(file_path)
+           
+        logging.info("Exited the load_object method of utils")
+        return obj
+    except Exception as e:
+        raise AlzException(e, sys)
+
+
+
+def decodeImage(imgstring, fileName):
+    imgdata = base64.b64decode(imgstring)
+    with open(fileName, 'wb') as f:
+        f.write(imgdata)
+        f.close()
+
+
+def encodeImageIntoBase64(croppedImagePath):
+    with open(croppedImagePath, "rb") as f:
+        return base64.b64encode(f.read())

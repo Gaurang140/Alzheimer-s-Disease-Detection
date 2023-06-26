@@ -5,7 +5,7 @@ from alzheimer_disease.utils.main_utils import get_data_from_mongodb
 from alzheimer_disease.logger import logging
 from alzheimer_disease.entity.config_entity import DataIngestionConfig
 from alzheimer_disease.entity.artifacts_entity import DataIngestionArtifact
-import sys
+
 
 class DataIngestion:
     def __init__(self, data_ingestion_config: DataIngestionConfig):
@@ -56,4 +56,4 @@ class DataIngestion:
 
         except Exception as e:
             logging.exception("Failed to initiate data ingestion.")
-            raise AlzException(e)
+            raise AlzException(e,sys)
