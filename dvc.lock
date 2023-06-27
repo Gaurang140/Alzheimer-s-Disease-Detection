@@ -49,8 +49,8 @@ stages:
       size: 2572
     - path: src/alzheimer_disease/pipeline/s02_data_validation.py
       hash: md5
-      md5: 65633f0107efe2bddfba71a2690aacc9
-      size: 1650
+      md5: 4fb4465839b2248cc6f48751cadee52d
+      size: 1530
     outs:
     - path: artifacts/data_validation/status.txt
       hash: md5

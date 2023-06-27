@@ -26,8 +26,7 @@ class DataValidationTrainingPipeline:
         if data_validation_artifact.validation_status:
             logging.info(f">>>>>> stage {STAGE_NAME} completed successfully <<<<<<")
         else:
-            #raise AlzException("Data Validation Failed")
-            pass
+            raise AlzException("Data Validation Failed")
 
 
 if __name__ == '__main__':
