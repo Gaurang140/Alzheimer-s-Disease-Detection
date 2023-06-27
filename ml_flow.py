@@ -10,16 +10,26 @@ from alzheimer_disease.components.model_trainer import ModelTrainer
 from alzheimer_disease.components.model_eval import ModelEvaluation
 from alzheimer_disease.components.model_pusher import ModelPusher
 from alzheimer_disease.exception import AlzException
+from alzheimer_disease.constant import *
 import sys
 import mlflow
 import os
+from urllib.parse import urlparse
 from mlflow import log_metric, log_param, log_artifacts
+import mlflow.tensorflow 
+
 
 try:
+    
     if mlflow.active_run():
         mlflow.end_run()
     # Start MLflow run
     mlflow.start_run()
+
+
+
+
+
 
     # Data ingestion
     training_pipeline_config = TrainingPipelineConfig()
@@ -30,8 +40,7 @@ try:
     data_ingestion_artifact = data_ingestion.initiate_data_ingestion()
 
     # Log data ingestion artifact as artifact
-    mlflow.log_artifact(data_ingestion_artifact.train_path, "data_ingestion_artifact")
-    mlflow.log_artifact(data_ingestion_artifact.test_path, "data_ingestion_artifact")
+    
 
 
 
@@ -83,13 +92,20 @@ try:
         # Log model pusher artifact as artifact
         mlflow.log_artifact(model_pusher_artifact.pusher_model_dir, "model_pusher_artifact")
         mlflow.log_artifact(model_pusher_artifact.saved_model_dir, "model_pusher_artifact")
+
        
 
 
-        #MLFLOW_TRACKING_URI= "https://dagshub.com/Gaurang140/Alzheimer-s-Disease-Detection.mlflow \"
-        #mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
-      
+
+
+        MLFLOW_TRACKING_URI= "https://dagshub.com/Gaurang140/Alzheimer-s-Disease-Detection.mlflow"
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+        tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+
+   
+
       
     else:
         raise AlzException("Data Validation Failed")

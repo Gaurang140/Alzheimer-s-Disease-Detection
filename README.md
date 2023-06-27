@@ -13,3 +13,13 @@ validation of the data
 model training
 model evaluation
 model pusher in production
+
+
+# ML flow 
+```bash 
+
+set MLFLOW_TRACKING_URI=https://dagshub.com/Gaurang140/Alzheimer-s-Disease-Detection.mlflow 
+set MLFLOW_TRACKING_USERNAME= username 
+set MLFLOW_TRACKING_PASSWORD= password 
+
+````

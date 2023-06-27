@@ -72,7 +72,7 @@ class ModelTrainer:
                                                        test_save_path=self.model_trainer_config.test_save_dir )
             
         logging.info(f"TensorFlow Dataset prepared and has {class_name}")
-        log_param(class_name=class_name)
+      
         
         model = self.build_model((self.model_trainer_config.image_size[0],
                                   self.model_trainer_config.image_size[1],
@@ -95,9 +95,9 @@ class ModelTrainer:
                             epochs=self.model_trainer_config.epochs,
                             callbacks=callbacks)
         
-        if mlflow_run is not None:
-            for metric_name, metric_value in history.history.items():
-                mlflow_run.log_metric(metric_name, metric_value[-1])
+      
+        for metric_name, metric_value in history.history.items():
+            mlflow.log_metric(metric_name, metric_value[-1])
         
         logging.info("Training Completed")
 
