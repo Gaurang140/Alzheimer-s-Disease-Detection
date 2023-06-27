@@ -1,8 +1,8 @@
-from alzheimer_disease.entity.artifacts_entity import DataIngestionArtifact
+from alzheimer_disease.pipeline.s01_data_ingestion import DataIngestionArtifact 
 from alzheimer_disease.utils.main_utils import create_callbacks, create_datasets,evaluate_model
 from alzheimer_disease.exception import AlzException
 from alzheimer_disease.logger import logging
-from alzheimer_disease.entity.artifacts_entity import DataIngestionArtifact,ModelTrainerArtifcats
+from alzheimer_disease.entity.artifacts_entity import ModelTrainerArtifcats
 from alzheimer_disease.entity.config_entity import ModelTrainerConfig
 from keras.applications import EfficientNetB0,VGG19
 from mlflow import log_metric, log_param, log_artifacts

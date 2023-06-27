@@ -8,11 +8,11 @@ from alzheimer_disease.constant.training_pipeline import *
 
 
 
-TIMESTAMP: str = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+#TIMESTAMP: str = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 
 @dataclass
 class TrainingPipelineConfig:
-    artifacts_dir: str = os.path.join(ARTIFACTS_DIR,TIMESTAMP)
+    artifacts_dir: str = os.path.join(ARTIFACTS_DIR)
 
 training_pipeline_config:TrainingPipelineConfig = TrainingPipelineConfig() 
 

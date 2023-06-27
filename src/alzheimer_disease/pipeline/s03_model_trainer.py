@@ -1,4 +1,4 @@
-from alzheimer_disease.entity.artifacts_entity import ModelTrainerArtifact,DataIngestionArtifact
+from alzheimer_disease.entity.artifacts_entity import DataIngestionArtifact, ModelTrainerArtifcats
 from alzheimer_disease.entity.config_entity import ModelTrainerConfig
 from alzheimer_disease.components.model_trainer import ModelTrainer
 from alzheimer_disease.exception import AlzException
@@ -13,13 +13,14 @@ class ModelTrainerTrainingPipeline:
 
     def main(self):
         model_trainer_config = ModelTrainerConfig()
-        data_ingestion_artifact = DataIngestionArtifact()  
+        data_ingestion_artifact =DataIngestionArtifact(train_path=r'artifacts\data_ingestion\train', 
+                                                        test_path=r'artifacts\data_ingestion\test')  
 
         model_trainer = ModelTrainer(
             model_trainer_config=model_trainer_config,
             data_ingestion_artifact=data_ingestion_artifact
         )
-         model_trainer.initiate_model_training()
+        model_trainer.initiate_model_training()
 
 
 

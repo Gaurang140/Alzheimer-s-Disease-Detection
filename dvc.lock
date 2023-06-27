@@ -1,0 +1,130 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: "python src/alzheimer_disease/pipeline/s01_data_ingestion.py\n"
+    deps:
+    - path: src/alzheimer_disease/entity/artifacts_entity.py
+      hash: md5
+      md5: a86c8067665604e3f1d5b68eb2aba246
+      size: 564
+    - path: src/alzheimer_disease/entity/config_entity.py
+      hash: md5
+      md5: 89248c35c826682ae9df61483d14dc34
+      size: 2572
+    - path: src/alzheimer_disease/pipeline/s01_data_ingestion.py
+      hash: md5
+      md5: 73b24a4da3494e72d0e50b03167dcff5
+      size: 1034
+    outs:
+    - path: artifacts/data_ingestion/test
+      hash: md5
+      md5: b332e68bf47f706103736163473c9f62.dir
+      size: 2627683
+      nfiles: 195
+    - path: artifacts/data_ingestion/train
+      hash: md5
+      md5: c0c777c9a3062016c1df2503697a69ee.dir
+      size: 14678932
+      nfiles: 1101
+  data_validation:
+    cmd: "python src/alzheimer_disease/pipeline/s02_data_validation.py\n"
+    deps:
+    - path: artifacts/data_ingestion/test
+      hash: md5
+      md5: b332e68bf47f706103736163473c9f62.dir
+      size: 2627683
+      nfiles: 195
+    - path: artifacts/data_ingestion/train
+      hash: md5
+      md5: c0c777c9a3062016c1df2503697a69ee.dir
+      size: 14678932
+      nfiles: 1101
+    - path: src/alzheimer_disease/entity/artifacts_entity.py
+      hash: md5
+      md5: a86c8067665604e3f1d5b68eb2aba246
+      size: 564
+    - path: src/alzheimer_disease/entity/config_entity.py
+      hash: md5
+      md5: 89248c35c826682ae9df61483d14dc34
+      size: 2572
+    - path: src/alzheimer_disease/pipeline/s02_data_validation.py
+      hash: md5
+      md5: 65633f0107efe2bddfba71a2690aacc9
+      size: 1650
+    outs:
+    - path: artifacts/data_validation/status.txt
+      hash: md5
+      md5: 17efcb780cf6255d6af600fd182a1e95
+      size: 26
+  evaluation:
+    cmd: "python src/alzheimer_disease/pipeline/s04_model_eval.py\n"
+    deps:
+    - path: src/alzheimer_disease/entity/artifacts_entity.py
+      hash: md5
+      md5: a86c8067665604e3f1d5b68eb2aba246
+      size: 564
+    - path: src/alzheimer_disease/entity/config_entity.py
+      hash: md5
+      md5: 89248c35c826682ae9df61483d14dc34
+      size: 2572
+  model_training:
+    cmd: "python src/alzheimer_disease/pipeline/s03_model_trainer.py\n"
+    deps:
+    - path: src/alzheimer_disease/entity/artifacts_entity.py
+      hash: md5
+      md5: a86c8067665604e3f1d5b68eb2aba246
+      size: 564
+    - path: src/alzheimer_disease/entity/config_entity.py
+      hash: md5
+      md5: 89248c35c826682ae9df61483d14dc34
+      size: 2572
+    - path: src/alzheimer_disease/pipeline/s01_data_ingestion.py
+      hash: md5
+      md5: 73b24a4da3494e72d0e50b03167dcff5
+      size: 1034
+    - path: src/alzheimer_disease/pipeline/s03_model_trainer.py
+      hash: md5
+      md5: 5f5a47b3fb682f2636e6a24dd2b49663
+      size: 1308
+    outs:
+    - path: artifacts/model_trainer/Tensorflow_test
+      hash: md5
+      md5: 0bee64062fb26bfee4489ad9e9b4c66e.dir
+      size: 2867848
+      nfiles: 3
+    - path: artifacts/model_trainer/alzeimer_model.h5
+      hash: md5
+      md5: 58258e4794d485073b35e1ca0ee70609
+      size: 82166232
+    - path: artifacts/model_trainer/checkpoints
+      hash: md5
+      md5: 4fb4c0df757bd42e28857ead87c252dc.dir
+      size: 82935400
+      nfiles: 5
+    - path: artifacts/model_trainer/evaluation_results.json
+      hash: md5
+      md5: 9239fbf29c23624702c10c5313f0dfe1
+      size: 730
+  model_pusher:
+    cmd: "python src/alzheimer_disease/pipeline/s05_model_pusher.py\n"
+    deps:
+    - path: src/alzheimer_disease/config.py
+      hash: md5
+      md5: 68b128204bdfc4f446b817662e18e446
+      size: 1598
+    - path: src/alzheimer_disease/entity/artifacts_entity.py
+      hash: md5
+      md5: a86c8067665604e3f1d5b68eb2aba246
+      size: 564
+    - path: src/alzheimer_disease/entity/config_entity.py
+      hash: md5
+      md5: 89248c35c826682ae9df61483d14dc34
+      size: 2572
+    - path: src/alzheimer_disease/pipeline/s05_model_pusher.py
+      hash: md5
+      md5: d7674804c2b1680a3f29348563970481
+      size: 1488
+    - path: src/alzheimer_disease/utils/main_utils.py
+      hash: md5
+      md5: 3d88a9dab66eaacdc784c09742eb5a5e
+      size: 12996

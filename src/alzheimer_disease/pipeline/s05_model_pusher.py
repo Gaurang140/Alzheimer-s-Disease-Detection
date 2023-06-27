@@ -13,7 +13,11 @@ class ModelPusherTrainingPipeline:
 
     def main(self):
         model_pusher_config = ModelPusherConfig()
-        model_trainer_artifact = ModelTrainerArtifcats()  
+        model_trainer_artifact = ModelTrainerArtifcats(model_dir=r"artifacts\model_trainer\alzeimer_model.h5",
+                                                       test_path=r"artifacts\model_trainer\Tensorflow_test",
+                                                       eval_report=r"artifacts\model_trainer\evaluation_results.json"
+
+                                                       )
 
         model_pusher = ModelPusher(
             model_pusher_config=model_pusher_config,

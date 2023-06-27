@@ -13,8 +13,15 @@ class ModelEvaluationTrainingPipeline:
 
     def main(self):
         model_eval_config = ModelEvaluationConfig()
-        model_trainer_artifact = ModelTrainerArtifcats()  # Replace with the actual ModelTrainerArtifact object
-        data_ingestion_artifact = DataIngestionArtifact()  # Replace with the actual DataIngestionArtifact object
+
+        model_trainer_artifact = ModelTrainerArtifcats(model_dir="artifacts\model_trainer\alzeimer_model.h5",
+                                                       test_path="artifacts\model_trainer\Tensorflow_test",
+                                                       eval_report="artifacts\model_trainer\evaluation_results.json"
+
+                                                       )
+          # Replace with the actual ModelTrainerArtifact object
+        data_ingestion_artifact = DataIngestionArtifact(train_path='artifacts\data_ingestion\train ', 
+                                                        test_path='artifacts\data_ingestion\test')   # Replace with the actual DataIngestionArtifact object
 
         model_eval = ModelEvaluation(
             model_eval_config=model_eval_config,
@@ -23,10 +30,6 @@ class ModelEvaluationTrainingPipeline:
         )
         model_eval_artifact = model_eval.initiate_model_evaluation()
 
-        if model_eval_artifact.evaluation_status:
-            logging.info(f">>>>>> stage {STAGE_NAME} completed successfully <<<<<<")
-        else:
-            raise AlzException("Model Evaluation Failed")
 
 
 if __name__ == '__main__':
