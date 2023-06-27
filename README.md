@@ -5,9 +5,18 @@
 * The main objective is to detect Alzheimer's disease and mild cognitive impairment early through the proposed CNN network approach, which retrieves features from brain MRI data to differentiate between healthy cognition, clinical diagnosed AD, and MCI, and identifying the patterns of MRI brain changes that characterize AD and MCI.
 
 
-# Project Architecture
+<div style="display:flex; justify-content: space-between; align-items: flex-start;">
+    <div style="flex-basis: 49%;">
+        <h3>Project Architecture</h3>
+        <img src="graphs/Project_arch.png" alt="Project Architecture">
+    </div>
+    <div style="flex-basis: 49%;">
+        <h3>Deployment Architecture</h3>
+        <img src="graphs/Deployment Architecture.png" alt="Deployment Architecture">
+    </div>
+</div>
 
-![Project Architecture](graphs/Project_arch.png)
+
 
 
 
@@ -44,7 +53,7 @@ Before running the project, please ensure that you have the following prerequisi
 2. **AWS Account**: You will need an AWS account to access services like AWS S3, AWS ECR, and AWS EC2 instances. If you don't have an AWS account, you can create one on the AWS website.
 
 Once you have the prerequisites set up, follow these steps to run the project:
-## step 1:
+## step 1: Clone repository
 1. Clone the repository to your local machine using the following command:
 
 ```bash
@@ -63,7 +72,7 @@ conda activate alzenv
 pip install -r requirements.txt
 ```
 
-## step 4- set environment variables
+## step 4: Set environment variables
 
 ```bash	
 set AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
@@ -94,8 +103,6 @@ http://localhost:8080/train
 # Experiment Tracking with MLflow
 
 
-## To track experiments using MLflow in the Alzheimer's Disease Detection project, follow these steps:
-
 ### ML flow locally 
 To run MLflow locally, open a new command prompt or terminal window and execute the following command:
 
@@ -105,7 +112,7 @@ mlflow ui
 This will start the MLflow server locally, and you can access the MLflow UI by visiting http://localhost:5000 in your web browser.
 
 
-### ML flow remote(Dagshub)![mlflow](https://img.shields.io/badge/mlflow-%23d9ead3.svg?style=for-the-badge&logo=numpy&logoColor=blue)
+### ML flow remote(Dagshub)
 To track experiments externally using Dagshub, set the following environment variables:
 
 ```bash 
@@ -119,7 +126,6 @@ Replace <username> and <password> with your Dagshub credentials. This will confi
 
 # DVC
 
-## To use DVC for managing data pipelines and experiments, follow these steps:
 
 **Initialize DVC**: Run the following command to initialize DVC:
 
