@@ -25,7 +25,7 @@ class PredictPipeline:
         class_names = ['Final AD JPEG', 'Final CN JPEG', 'Final EMCI JPEG', 'Final LMCI JPEG', 'Final MCI JPEG']
 
         # Load and preprocess the test image
-        test_image = image.load_img(self.filename, target_size=(256, 256))
+        test_image = image.load_img(self.filename, target_size=(35, 35))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
         test_image = test_image / 255.0

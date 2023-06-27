@@ -1,0 +1,14 @@
+strict digraph  {
+"data_ingestion";
+"data_validation";
+"model_training";
+"evaluation";
+"model_pusher";
+"data_ingestion" -> "data_validation";
+"data_ingestion" -> "model_training";
+"data_ingestion" -> "evaluation";
+"data_validation" -> "model_training";
+"model_training" -> "evaluation";
+"model_training" -> "model_pusher";
+}
+
