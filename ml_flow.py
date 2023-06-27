@@ -84,6 +84,12 @@ try:
         mlflow.log_artifact(model_pusher_artifact.pusher_model_dir, "model_pusher_artifact")
         mlflow.log_artifact(model_pusher_artifact.saved_model_dir, "model_pusher_artifact")
        
+
+
+        #MLFLOW_TRACKING_URI= "https://dagshub.com/Gaurang140/Alzheimer-s-Disease-Detection.mlflow \"
+        #mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+      
       
     else:
         raise AlzException("Data Validation Failed")

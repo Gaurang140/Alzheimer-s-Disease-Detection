@@ -133,3 +133,7 @@ artifacts/
 checkpoints/
 models/
 /artifacts
+/mlruns
+mlruns/
+saved_models/
+/saved_models
