@@ -84,5 +84,5 @@ class ModelPusherConfig:
         model_pusher_dir = os.path.join(training_pipeline_config.artifacts_dir , "model_pusher")
         saved_model_dir = os.path.join("saved_models")
         pusher_model_dir = os.path.join(model_pusher_dir,"saved_models")
-        pusher_model_path = os.path.join(pusher_model_dir,MODEL_NAME)
+        pusher_model_path = os.path.join(pusher_model_dir , MODEL_NAME)
         

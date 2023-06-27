@@ -5,6 +5,7 @@ from alzheimer_disease.logger import logging
 import sys 
 import shutil
 import os  # Add this line to import the os module
+from mlflow import log_metric, log_param, log_artifacts
 
 
 class DataValidation:

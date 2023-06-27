@@ -5,6 +5,8 @@ from alzheimer_disease.logger import logging
 from alzheimer_disease.entity.artifacts_entity import DataIngestionArtifact,ModelTrainerArtifcats
 from alzheimer_disease.entity.config_entity import ModelTrainerConfig
 from keras.applications import EfficientNetB0,VGG19
+from mlflow import log_metric, log_param, log_artifacts
+import mlflow
 import ssl
 
 # Disable SSL verification
@@ -67,9 +69,10 @@ class ModelTrainer:
                                                        image_size=self.model_trainer_config.image_size, 
                                                        batch_size=self.model_trainer_config.batch_size,
                                                        validation_split=self.model_trainer_config.validation_split,
-                                                       test_save_path=self.model_trainer_config.test_save_dir  )
+                                                       test_save_path=self.model_trainer_config.test_save_dir )
             
         logging.info(f"TensorFlow Dataset prepared and has {class_name}")
+        log_param(class_name=class_name)
         
         model = self.build_model((self.model_trainer_config.image_size[0],
                                   self.model_trainer_config.image_size[1],
@@ -92,6 +95,10 @@ class ModelTrainer:
                             epochs=self.model_trainer_config.epochs,
                             callbacks=callbacks)
         
+        if mlflow_run is not None:
+            for metric_name, metric_value in history.history.items():
+                mlflow_run.log_metric(metric_name, metric_value[-1])
+        
         logging.info("Training Completed")
 
       
@@ -105,7 +112,8 @@ class ModelTrainer:
         logging.info("Model Saved")
         
         model_trainer_artifact = ModelTrainerArtifcats(model_dir=self.model_trainer_config.model_save,
-                                                       test_path=self.model_trainer_config.test_save_dir)
+                                                       test_path=self.model_trainer_config.test_save_dir,
+                                                       eval_report=self.model_trainer_config.prediction_results_report_dir)
         
         logging.info(f"Model Trained Artifact Created: {model_trainer_artifact}")
         

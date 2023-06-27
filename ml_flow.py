@@ -12,9 +12,12 @@ from alzheimer_disease.components.model_pusher import ModelPusher
 from alzheimer_disease.exception import AlzException
 import sys
 import mlflow
+import os
 from mlflow import log_metric, log_param, log_artifacts
 
 try:
+    if mlflow.active_run():
+        mlflow.end_run()
     # Start MLflow run
     mlflow.start_run()
 
@@ -30,6 +33,11 @@ try:
     mlflow.log_artifact(data_ingestion_artifact.train_path, "data_ingestion_artifact")
     mlflow.log_artifact(data_ingestion_artifact.test_path, "data_ingestion_artifact")
 
+
+
+    
+
+
     # Data validation
     data_validation_config = DataValidationConfig()
     data_validation = DataValidation(data_validation_config=data_validation_config,
@@ -38,6 +46,9 @@ try:
 
     # Log data validation artifact as artifact
     mlflow.log_artifact(data_validation_config.data_validation_dir, "data_validation_artifact")
+
+    # Track data validation artifact with DVC
+   
 
     if data_validation_artifact.validation_status:
         # Model training
@@ -48,6 +59,12 @@ try:
 
         # Log model trainer artifact as artifact
         mlflow.log_artifact(model_trainer_artifact.model_dir, "model_trainer_artifact")
+        mlflow.log_artifact(model_trainer_artifact.eval_report, "model_trainer_artifact")
+
+
+
+         #Track model trainer artifact with DVC
+     
 
         # Model evaluation
         model_eval_config = ModelEvaluationConfig()
@@ -56,10 +73,7 @@ try:
                                      data_ingestion_artifact=data_ingestion_artifact)
         model_eval_artifact = model_eval.initiate_model_evaluation()
 
-        # Log model evaluation artifact as artifact
-        mlflow.log_artifact(model_eval_artifact.improved_accuracy, "model_evaluation_artifact")
-        mlflow.log_artifact(model_eval_artifact.is_model_accepted, "model_evaluation_artifact")
-
+   
         # Model pushing
         model_pusher_config = ModelPusherConfig()
         model_pusher = ModelPusher(model_pusher_config=model_pusher_config,
@@ -69,6 +83,7 @@ try:
         # Log model pusher artifact as artifact
         mlflow.log_artifact(model_pusher_artifact.pusher_model_dir, "model_pusher_artifact")
         mlflow.log_artifact(model_pusher_artifact.saved_model_dir, "model_pusher_artifact")
+       
       
     else:
         raise AlzException("Data Validation Failed")
@@ -79,3 +94,4 @@ except Exception as e:
 finally:
     # End MLflow run
     mlflow.end_run()
+

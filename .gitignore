@@ -132,3 +132,4 @@ data/
 artifacts/
 checkpoints/
 models/
+/artifacts

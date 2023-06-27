@@ -1,9 +1,0 @@
-schema: '2.0'
-stages:
-  evaluation:
-    cmd: python src/alzheimer_disease/components/model_eval.py
-    deps:
-    - path: src/alzheimer_disease/pipeline/s04_model_eval.py
-      hash: md5
-      md5: cce22be8c7fc6c6381f9e565b964494b
-      size: 1648

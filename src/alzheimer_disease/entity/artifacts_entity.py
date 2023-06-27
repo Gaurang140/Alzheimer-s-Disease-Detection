@@ -19,6 +19,7 @@ class DataValidationArtifact:
 class ModelTrainerArtifcats:
     model_dir :str
     test_path:str
+    eval_report : str
 
 
 @dataclass

@@ -225,7 +225,7 @@ def create_datasets(train_path, test_path, image_size, batch_size, validation_sp
 # Preprocess and cache the test dataset
     test_ds = test_dataset.map(lambda x, y: (resize_and_rescale(x), y)).cache().shuffle(1000).prefetch(buffer_size=tf.data.AUTOTUNE)
 
-    #tf.data.Dataset.save(test_ds, test_save_path)
+    tf.data.Dataset.save(test_ds, test_save_path)
 
     return train_ds, val_ds, test_ds, class_names
 

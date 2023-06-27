@@ -7,6 +7,7 @@ from alzheimer_disease.exception import AlzException
 from alzheimer_disease.logger import logging 
 from alzheimer_disease.config import ModelManager
 import sys 
+import mlflow 
 import shutil
 
 
@@ -45,11 +46,14 @@ class ModelEvaluation:
             current_model = tf.keras.models.load_model(self.model_trainer_artifact.model_dir)
 
             # Evaluate models on the test dataset
-            test_ds = self.data_ingestion_artifact.test_path
+            test = self.model_trainer_artifact.test_path
+            test_ds = tf.data.Dataset.load(test)
             y_true = []
             y_pred_previous = []
             y_pred_current = []
-            for images, labels in test_ds:
+            for data in test_ds:
+                images = data[0]  # Extract images from the data
+                labels = data[1]  # Extract labels from the data
                 predictions_previous = previous_model.predict(images)
                 predicted_labels_previous = tf.argmax(predictions_previous, axis=1).numpy()
                 y_true.extend(labels.numpy())
@@ -59,12 +63,18 @@ class ModelEvaluation:
                 predicted_labels_current = tf.argmax(predictions_current, axis=1).numpy()
                 y_pred_current.extend(predicted_labels_current)
 
+              
+
+
             # Calculate F1 scores
-            previous_model_score = f1_score(y_true=y_true, y_pred=y_pred_previous)
-            current_model_score = f1_score(y_true=y_true, y_pred=y_pred_current)
+            previous_model_score = f1_score(y_true=y_true, y_pred=y_pred_previous, average='macro')
+            current_model_score = f1_score(y_true=y_true, y_pred=y_pred_current,average='macro')
 
             logging.info(f"Accuracy using the previously trained model: {previous_model_score}")
             logging.info(f"Accuracy using the currently trained model: {current_model_score}")
+
+            mlflow.log_metric("previous_model_score", previous_model_score)
+            mlflow.log_metric("current_model_score", current_model_score)
 
             if current_model_score <= previous_model_score:
                 logging.info("The currently trained model is not better than the previous model")
