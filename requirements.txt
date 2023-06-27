@@ -17,4 +17,4 @@ scikit-learn
 Flask-Cors
 pymongo
 mlflow
-#-e .
+-e .

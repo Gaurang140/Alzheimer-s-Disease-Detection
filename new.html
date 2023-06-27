@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DVC Pipeline Visualization</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  <style>
+    .mongodb-icon {
+      width: 50px;
+      height: 50px;
+      background-image: url('mango.png');
+      image-rendering:url('mango.png'); 
+      background-size: cover;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 00px;
+    }
+    .artifact {
+      background-color: #f7f7f7;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      margin-top: 10px;
+    }
+    
+    /* Animation Keyframes */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    /* Tooltip Styles */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="mermaid" id="pipeline">
+    graph LR;
+    mongodb((<div class="mongodb-icon"></div> ))--> DataIngestion;
+    DataIngestion --> train((Train Data));
+    DataIngestion --> test((Test Data));
+    data_validation --> status_file((Status File));
+    train((Train Data)) --> data_validation;
+    test((Test Data)) --> data_validation;
+    data_validation --> model_training;
+    model_training --> model_evaluation;
+    model_evaluation --> model_pusher;
+    model_training --> model_h5((Model.h5));
+    model_training --> score_json((Score.json));
+  </div>
+
+  <script>
+    // Add animation class to the pipeline elements
+    const animatePipeline = () => {
+      const pipelineElements = document.querySelectorAll('#pipeline .node');
+      pipelineElements.forEach(element => {
+        element.classList.add('animate-fade-in');
+      });
+    };
+    
+    // Add tooltips to each stage
+    const addToolTips = () => {
+      const stages = {
+     
+        DataIngestion: 'Data Ingestion',
+        train: 'Train Data',
+        test: 'Test Data',
+        data_validation: 'Data Validation',
+        status_file: 'Status File',
+        model_training: 'Model Training',
+        model_evaluation: 'Model Evaluation',
+        model_pusher: 'Model Pusher',
+        model_h5: 'Model.h5',
+        score_json: 'Score.json'
+      };
+      
+      for (const stage in stages) {
+        const stageElement = document.querySelector(`#${stage}`);
+        if (stageElement) {
+          const tooltip = document.createElement('div');
+          tooltip.classList.add('tooltip');
+          
+          const stageText = stages[stage];
+          tooltip.innerHTML = `<span class="tooltiptext">${stageText}</span>`;
+          
+          stageElement.parentNode.insertBefore(tooltip, stageElement.nextSibling);
+        }
+      }
+    };
+    
+    // Call addToolTips and animatePipeline after Mermaid has rendered the diagram
+    mermaid.initialize({ startOnLoad: true, onRender: () => { addToolTips(); animatePipeline(); } });
+  </script>
+</body>
+</html>

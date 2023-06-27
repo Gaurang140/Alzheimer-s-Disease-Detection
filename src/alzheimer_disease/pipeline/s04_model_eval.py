@@ -14,14 +14,14 @@ class ModelEvaluationTrainingPipeline:
     def main(self):
         model_eval_config = ModelEvaluationConfig()
 
-        model_trainer_artifact = ModelTrainerArtifcats(model_dir="artifacts\model_trainer\alzeimer_model.h5",
-                                                       test_path="artifacts\model_trainer\Tensorflow_test",
-                                                       eval_report="artifacts\model_trainer\evaluation_results.json"
+        model_trainer_artifact = ModelTrainerArtifcats(model_dir=r"artifacts\model_trainer\alzeimer_model.h5",
+                                                       test_path=r"artifacts\model_trainer\Tensorflow_test",
+                                                       eval_report=r"artifacts\model_trainer\evaluation_results.json"
 
                                                        )
           # Replace with the actual ModelTrainerArtifact object
-        data_ingestion_artifact = DataIngestionArtifact(train_path='artifacts\data_ingestion\train ', 
-                                                        test_path='artifacts\data_ingestion\test')   # Replace with the actual DataIngestionArtifact object
+        data_ingestion_artifact = DataIngestionArtifact(train_path=r'artifacts\data_ingestion\train ', 
+                                                        test_path=r'artifacts\data_ingestion\test')   # Replace with the actual DataIngestionArtifact object
 
         model_eval = ModelEvaluation(
             model_eval_config=model_eval_config,

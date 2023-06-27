@@ -27,22 +27,25 @@ stages:
       python src/alzheimer_disease/pipeline/s03_model_trainer.py
     deps:
       - src/alzheimer_disease/pipeline/s03_model_trainer.py
-      - src/alzheimer_disease/pipeline/s01_data_ingestion.py
-      - src/alzheimer_disease/entity/artifacts_entity.py
       - src/alzheimer_disease/entity/config_entity.py
+      - "artifacts/data_validation/status.txt"
+      - "artifacts/data_ingestion/train"
     outs:
       - "artifacts/model_trainer/alzeimer_model.h5"
       - "artifacts/model_trainer/checkpoints"
       - "artifacts/model_trainer/evaluation_results.json"
-      - "artifacts/model_trainer/Tensorflow_test"
+
+      
       
 
   evaluation:
     cmd: |
       python src/alzheimer_disease/pipeline/s04_model_eval.py
     deps:
-      - src/alzheimer_disease/entity/artifacts_entity.py
       - src/alzheimer_disease/entity/config_entity.py
+      - "artifacts/model_trainer/alzeimer_model.h5"
+      - "artifacts/data_ingestion/test"
+      -  saved_models/1/model
       
 
   model_pusher:
@@ -50,8 +53,8 @@ stages:
       python src/alzheimer_disease/pipeline/s05_model_pusher.py
     deps:
       - src/alzheimer_disease/pipeline/s05_model_pusher.py
-      - src/alzheimer_disease/entity/artifacts_entity.py
       - src/alzheimer_disease/entity/config_entity.py
-      - src/alzheimer_disease/config.py
-      - src/alzheimer_disease/utils/main_utils.py
+      - saved_models/1/model
+      - "artifacts/model_trainer/alzeimer_model.h5"
+      
     
