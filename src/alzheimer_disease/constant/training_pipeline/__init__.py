@@ -16,7 +16,7 @@ DATA_INGESTION_DIR_NAME: str = "data_ingestion"
 
 DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
 
-DATA_BASE_NAME = "alzeimer_database-1"
+DATA_BASE_NAME = "alzeimer_dataset"
 OUTPUT_FOLDER_PATH =os.path.join("data")
 #COLLECTION_NAME = "collection_name"
 #VAL_RATION = 0.1
@@ -51,7 +51,7 @@ MODEL_CHECKPOINT_DIR_NAME: str =  "checkpoints"
 IMAGE_SIZE: tuple = (35, 35)
 CHANNELS: int = 3
 INPUT_SHAPE: tuple = (IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
-CLASSES:int = 5
+CLASSES:int = 4
 VALIDATION_SPLIT: int = 0.2
 OPTIMIZER: str = "adam"
 PATIENCE :int = 10

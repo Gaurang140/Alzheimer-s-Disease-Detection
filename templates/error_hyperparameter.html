@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Alzeimer Disease Detection Web App</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <style>
+        .contact-form {
+            margin-top: 40px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 30px;
+            max-width: 500px;
+            width: 50%;
+            text-align: left;
+            color: #000;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            width: 120px;
+            background-color: #64a19d;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            margin: 0 auto; /* Add this line to center the button horizontally */
+            display: block;
+        }
+
+        .contact-form button:hover {
+            background-color: #64a19d;
+        }
+
+        .contact-form p {
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        .contact-form .success-message {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .techy-text {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .techy-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+            line-height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .credit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 12px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+
+<body id="page-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-dark" id="mainNav">
+     <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="#page-top"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        
+     
+
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home me-2"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about"><i class="fas fa-info-circle me-2"></i> About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/train"><i class="fas fa-robot me-2"></i> Train Model</a></li>
+        <li class="nav-item"><a class="nav-link" href="/predict"><i class="fas fa-chart-line me-2"></i> Prediction</a></li>
+        <li class="nav-item"><a class="nav-link" href="/mlflow-ui"><i class="fas fa-television me-2"></i> Experiment</a></li>
+      <li class="nav-item"><a class="nav-link" href="https://github.com/Gaurang140"><i class="fab fa-github me-2"></i> GitHub</a></li>
+      <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/gauranggiri-meghanathi-422804216/"><i class="fab fa-linkedin"></i> Linkdin</a></li>
+    </ul>
+  </div>
+</div>
+</div>    
+</nav>
+
+
+        
+
+                       
+    
+<header class="masthead">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+    <div class="d-flex justify-content-center">
+    <div class="text-center">
+
+            <p class="text-white-50"></li>An error occurred while Training the Model:</p>
+            <h2 class="text-white-50 mx-auto mt-2 mb-5">{{ error_message }}</h2>
+      
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li class="text-white-50">-------------------------------------------------------------------------------------------------</li>
+                <li class="text-white-50">To prevent overfitting and ensure the model's performance meets the desired threshold:</li>
+                <li class="text-white-50">Model acceptance requires a score above 0.7 (70%).</li>
+                <li class="text-white-50">Overfitting exceeding 0.1 will result in rejection.</li>
+                <li class="text-white-50">Comparison with the previous model is based on a minimum improvement of 0.1.</li>
+                <li class="text-white-50">Calculate the score on the testing set.</li>
+                <li class="text-white-50">If the score is below 0.7 percent (70%), further improvements are needed.</li>
+                <li class="text-white-50">If the score is 0.7 percent (70%) or higher, compare it with the previous model (if applicable).</li>
+                <li class="text-white-50"> If the current model performs better, accept it as the new best model.</li>
+                <li class="text-white-50">If not, further improvements are needed before acceptance.</li>
+                <li class="text-white-50">-------------------------------------------------------------------------------------------------</li>
+            </ul>
+         </div>
+                        
+        </div>
+        </div>
+
+</header>
+
+        
+       
+    
+    
+    
+    
+<section class="about-section text-center" id="about">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8">
+                
+                <p class="text-white-50">
+                    <div class="help-section">
+                        <h2 class="text-white mb-4">Need Help?</h2>
+                        <p class="text-white-50">If you need assistance or have any questions, please fill out the contact form below:</p>
+                        <div class="contact-form">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                            <input type="text" name="email" placeholder="Your Email" required>
+                            <textarea name="message" placeholder="Your Message" required></textarea>
+                            <button type="submit" id="sendButton">Send</button>
+                            <p class="success-message maintenance-message"></p>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </div>
+</section>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.querySelector('.contact-form');
+            var sendButton = form.querySelector('#sendButton');
+            var maintenanceMessage = form.querySelector('.maintenance-message');
+            var contactEmail = 'gauranggirimeghanathi@gmail.com'; // Replace with your email ID
+
+            sendButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                var nameInput = form.querySelector('input[name="name"]');
+                var messageInput = form.querySelector('textarea[name="message"]');
+                var name = nameInput.value;
+                var message = messageInput.value;
+
+                maintenanceMessage.textContent = 'Hello Mr. ' + name + '! ' + 'Currently this service is under maintenance. Please contact us at ' + contactEmail + '.';
+                maintenanceMessage.style.display = 'block';
+
+                // Clear input fields after submitting
+                nameInput.value = '';
+                messageInput.value = '';
+            });
+        });
+
+        
+    alert("An error occurred while processing the files:\n{{ error_message }}");
+       
+    </script>
+</body>
+</html>

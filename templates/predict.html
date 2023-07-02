@@ -1,0 +1,516 @@
+<html>
+<head>
+  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+		<title>Model Prediction</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #0076b6, #003865);
+            background-repeat: no-repeat;
+            background-size: cover;
+            animation: backgroundAnimation 10s linear infinite;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        
+
+        @keyframes backgroundAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .small-area {
+            width: 70px;
+            height: auto;
+        }
+
+        .output-form-group {
+            font-weight: bold;
+        }
+
+        .output-form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .train-prediction-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .train-prediction-buttons button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .train-prediction-buttons button:hover {
+            background-color: #45a049;
+        }
+        .iupload h3{color: #1b2d6b;font-size: 30px;font-weight: 700;}
+		.img-part{height:300px;width:300px;margin:0px auto;}
+		.image-part{height:300px;width:300px;border:1px solid #1b2d6b;}
+		.image-part img{position:absolute;height: 300px;width:300px;display:none;padding:5px;}
+		.image-part #video{display:block;height: 300px;width:300px;padding:5px;}
+		.res-part{border:1px solid #dedede;margin-left:20px;height: 310px;width:100%;padding:5px;margin:0px auto;overflow:auto;}
+		.res-part2{border:1px solid #dedede;height: 310px;width:100%;padding:5px;margin:0px auto;}
+		.resp-img{height: 298px;width: 233px;margin:0px auto;}
+		.main.container {
+		margin-top: 150px;
+			}
+
+		.jsonRes{margin-left:30px;}
+		#send{cursor:pointer;}
+		.btn-part{width:325px;}
+		textarea,
+		select,
+		.form-control,
+		.custom-select,
+		button.btn,
+		.btn-primary,
+		input[type="text"],
+		input[type="url"],
+		.uneditable-input{
+			border: 1px solid #363e75;
+			outline: 0 !important;
+			border-radius:0px;
+			box-shadow: none;
+		   -webkit-box-shadow: none;
+		   -moz-box-shadow: none;
+		   -moz-transition: none;
+		   -webkit-transition: none;
+		}
+		textarea:focus,
+		select:focus,
+		.form-control:focus,
+		.btn:focus,
+		.btn-primary:focus,
+		.custom-select:focus,
+		input[type="text"]:focus,
+		.uneditable-input:focus{
+			border: 1px solid #6a7a8a;
+			outline: 0 !important;
+			border-radius:0px;
+			box-shadow: none;
+		   -webkit-box-shadow: none;
+		   -moz-box-shadow: none;
+		   -moz-transition: none;
+		   -webkit-transition: none;
+		}
+		#loading {
+			position: fixed;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			z-index: 9999999999;
+			overflow: hidden;
+			background: rgba(255, 255, 255, 0.7);
+		}
+		.loader {
+			border: 8px solid #f3f3f3;
+			border-top: 8px solid #363e75;
+			border-radius: 50%;
+			width: 60px;
+			height: 60px;
+			left: 50%;
+			margin-left: -4em;
+			display: block;
+			animation: spin 2s linear infinite;
+		}
+		.loader,
+		.loader:after {display: block;position: absolute;top: 50%;margin-top: -4.05em;}
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		
+		<style>
+	body {
+		background-color: #eff2f9;
+	}
+
+	.iupload h3 {
+		color: #1b2d6b;
+		font-size: 30px;
+		font-weight: 700;
+	}
+
+	.img-part {
+		height: 300px;
+		width: 300px;
+		margin: 0px auto;
+	}
+
+	.image-part {
+		height: 300px;
+		width: 300px;
+		border: 1px solid #1b2d6b;
+	}
+
+	.image-part img {
+		position: absolute;
+		height: 300px;
+		width: 300px;
+		display: none;
+		padding: 5px;
+	}
+
+	.image-part #video {
+		display: block;
+		height: 300px;
+		width: 300px;
+		padding: 5px;
+	}
+
+	.res-part {
+		border: 1px solid #dedede;
+		margin-left: 20px;
+		height: 310px;
+		width: 100%;
+		padding: 23px;
+		margin: 0px auto;
+		overflow: auto;
+		background: #dedede;
+	}
+
+	.res-part2 {
+		border: 1px solid #dedede;
+		height: 310px;
+		width: 100%;
+		padding: 23px;
+		margin: 0px auto;
+	}
+
+	.resp-img {
+		height: 298px;
+		width: 233px;
+		margin: 0px auto;
+	}
+    .jsonRes {
+        margin-left: 50px;
+        height: 200px;
+        width: 300px;
+        font-size: 18px;
+        font-display: white;
+    }
+
+	#send {
+		cursor: pointer;
+	}
+
+	.btn-part {
+		width: 325px;
+	}
+
+	textarea,
+	select,
+	.form-control,
+	.custom-select,
+	button.btn,
+	.btn-primary,
+	input[type="text"],
+	input[type="url"],
+	.uneditable-input {
+		border: 1px solid #363e75;
+		outline: 0 !important;
+		border-radius: 0px;
+		box-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-moz-transition: none;
+		-webkit-transition: none;
+	}
+
+	textarea:focus,
+	select:focus,
+	.form-control:focus,
+	.btn:focus,
+	.btn-primary:focus,
+	.custom-select:focus,
+	input[type="text"]:focus,
+	.uneditable-input:focus {
+		border: 1px solid #6a7a8a;
+		outline: 0 !important;
+		border-radius: 0px;
+		box-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-moz-transition: none;
+		-webkit-transition: none;
+	}
+
+	#loading {
+		position: fixed;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+		z-index: 9999999999;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.7);
+	}
+
+	.loader {
+		border: 8px solid #f3f3f3;
+		border-top: 8px solid #363e75;
+		border-radius: 50%;
+		width: 60px;
+		height: 60px;
+		left: 50%;
+		margin-left: -4em;
+		display: block;
+		animation: spin 2s linear infinite;
+	}
+
+	.loader,
+	.loader:after {
+		display: block;
+		position: absolute;
+		top: 50%;
+		margin-top: -4.05em;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+
+
+    </style>
+</head>
+<body id="page-top">
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-dark" id="mainNav">
+		<div class="container px-4 px-lg-5">
+		   <a class="navbar-brand" href="#page-top"></a>
+		   <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			   Menu
+			   <i class="fas fa-bars"></i>
+		   </button>
+		   
+		
+   
+	 <div class="collapse navbar-collapse" id="navbarResponsive">
+	   <ul class="navbar-nav ms-auto">
+		   <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home me-2"></i> Home</a></li>
+		   <li class="nav-item"><a class="nav-link" href="#about"><i class="fas fa-info-circle me-2"></i> About</a></li>
+		   <li class="nav-item"><a class="nav-link" href="/train"><i class="fas fa-robot me-2"></i> Train Model</a></li>
+		   <li class="nav-item"><a class="nav-link" href="/predict"><i class="fas fa-chart-line me-2"></i> Prediction</a></li>
+		   <li class="nav-item"><a class="nav-link" href="/mlflow-ui"><i class="fas fa-television me-2"></i> Experiment</a></li>
+		 <li class="nav-item"><a class="nav-link" href="https://github.com/Gaurang140"><i class="fab fa-github me-2"></i> GitHub</a></li>
+		 <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/gauranggiri-meghanathi-422804216/"><i class="fab fa-linkedin"></i> Linkdin</a></li>
+	   </ul>
+	 </div>
+   </div>
+</div>    
+</nav>
+   <!-- Masthead-->
+    
+<header class="masthead">
+<div class="main container">
+
+<div class="text-center">
+<section class="iupload">
+	
+	<div class="row">
+	
+		<div class="img-part col-md-6">
+			<div class="image-part">
+				<video autoplay id="video" poster="https://img.freepik.com/free-vector/group-young-people-posing-photo_52683-18824.jpg?size=338&ext=jpg"></video>
+				<img src="" id="photo">
+				<canvas style="display:none;" id="canvas"></canvas>
+			</div>
+			<div class="btn-part">
+				<form id="upload-data pt-3" class="">
+					<div class="input-group mt-3 row">
+						<button type="button" class="btn btn-primary col-md-5 col-xs-5 ml-3 mr-4" id="uload">Upload</button>
+						<button id="send" type="button" class="btn btn-success col-md-5 col-xs-5">Predict</button>
+					</div>
+
+
+
+
+
+
+					<!-- change url value  -->
+
+
+
+
+					<input type="hidden" class="form-control mr-2" id="url" placeholder="Enter REST Api url..." value="../predict"/>
+					<input name="upload" type="file" id="fileinput" style="position:absolute;top:-500px;"/><br/>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-6 col-xs-12 margin-right">
+			<h6 class="mb-2" style="color: white;"><center>Prediction Results</center></h6>
+			<div class="row">
+				<div class="res-part col-md-5 col-xs-12"><div class="jsonRes"></div></div>
+			</div>
+		</div>
+		
+	</div>
+</header>
+</div>
+</section>
+        
+		
+ 
+	
+
+
+<div id="loading"><div class="loader"></div></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+var mybtn = document.getElementById('startbtn');
+var myvideo = document.getElementById('video');
+var mycanvas = document.getElementById('canvas');
+var myphoto = document.getElementById('photo');
+var base_data = "";
+
+function sendRequest(base64Data){
+	var type = "json";
+	if(base64Data != "" || base64Data != null){
+		if(type == "imgtobase"){
+			$(".res-part").html("");
+			$(".res-part").html(base64Data);
+		}
+		else if(type == "basetoimg"){
+			var imageData = $("#imgstring").val();
+			$(".res-part").html("");
+			$(".res-part").append("<img src='data:image/jpeg;base64," + imageData + "' alt='' />");
+		}
+		else{
+			var url = $("#url").val();
+			$("#loading").show();
+			$.ajax({
+				url : url,
+				type: "post",
+				cache: false,
+				async: true,
+				crossDomain: true,
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin':'*'
+				},
+				data:JSON.stringify({image:base64Data}),
+				success: function(res){
+					$(".res-part").html("");
+					$(".res-part2").html("");
+					try{
+						var imageData = res[1].image;
+						if(imageData.length > 100){
+							if(imageData.length > 10){$(".res-part2").append("<img class='resp-img' src='data:image/jpeg;base64," + imageData + "' alt='' />");}
+						}
+					}catch(e){}
+					$(".res-part").html("<pre>" + JSON.stringify(res[0], undefined, 2) + "</pre>");
+					$("#loading").hide();
+				}
+			});
+		}
+	}
+}
+
+$(document).ready(function(){
+	$("#loading").hide();
+
+	$('#send').click(function(evt){
+		sendRequest(base_data);
+    });
+
+    $('#uload').click(function(evt) {
+        $('#fileinput').focus().trigger('click');
+    });
+	$("#fileinput").change(function(){
+		if (this.files && this.files[0]){
+			var reader = new FileReader();
+			reader.onload = function (e){
+				var url = e.target.result;
+				var img = new Image();
+				img.crossOrigin = 'Anonymous';
+				img.onload = function(){
+					var canvas = document.createElement('CANVAS');
+					var ctx = canvas.getContext('2d');
+					canvas.height = this.height;
+					canvas.width = this.width;
+					ctx.drawImage(this, 0, 0);
+					base_data = canvas.toDataURL('image/jpeg', 1.0).replace(/^data:image.+;base64,/, '');
+					canvas = null;
+				};
+				img.src = url;
+				$('#photo').attr('src', url);
+				$('#photo').show();
+				$('#video').hide();
+			}
+			reader.readAsDataURL(this.files[0]);
+		}
+	});
+});
+
+  
+
+
+</script>
+</body>
+</html>

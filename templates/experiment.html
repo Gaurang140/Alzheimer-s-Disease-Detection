@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Data Preprocessing</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #0076b6, #003865), url("IMG-8638.jpg");
+            background-image: url("path/to/image.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            animation: backgroundAnimation 10s linear infinite;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 50px;
+            max-width: 700px;
+            width: 80%;
+            height: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .techy-text {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .techy-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+            line-height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
+
+        .logo img {
+    max-width: 300px;
+    height: auto;
+}
+
+
+        .credit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .processing-message {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .processing-logo {
+            margin-top: 20px;
+            display: none;
+        }
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .processing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 9999;
+        }
+        .train-prediction-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .train-prediction-buttons button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .train-prediction-buttons button:hover {
+            background-color: #45a049;
+        }
+	
+    .content-text {
+        font-family: "Arial", sans-serif;
+        font-size: 18px;
+        color: hwb(200 53% 46%);
+        line-height: 1.5;
+    }
+    .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.navbar-brand {
+    font-size: 24px;
+}
+
+.navbar-nav .nav-link {
+    font-size: 18px;
+    margin-right: 10px;
+}
+.main-page {
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+}
+
+.app-heading {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1b2d6b;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+
+
+</style>
+
+    </style>
+<script>
+    function showProcessing() {
+        var form = document.getElementById("preprocessForm");
+        form.style.display = "none";
+
+        var message = document.getElementById("processingMessage");
+        message.style.display = "block";
+
+        var logo = document.getElementById("processingLogo");
+        logo.style.display = "block";
+
+        var spinner = document.getElementById("spinner");
+        spinner.style.display = "block";
+
+        var overlay = document.getElementById("processingOverlay");
+        overlay.style.display = "block";
+    }
+</script>
+</head>
+<body>
+  
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Alzeihmer Disease Web app</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/train">Train Model</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/predict">Prediction</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/mlflow-ui">Experiment</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="main-page">
+        <h1 class="app-heading">Alzheimer's Disease Web App</h1>
+      </div>
+      
+
+   
+    
+
+
+
+
+
+    <div class="processing-message" id="processingMessage">
+        Processing data... Please wait.
+    </div>
+
+    <div class="processing-logo" id="processingLogo">
+        <span class="spinner-border text-primary" role="status" aria-hidden="true"></span>
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+
+    <div class="processing-overlay" id="processingOverlay"></div>
+    <div class="techy-text">
+        <span class="techy-icon">&#9881;</span> Created by Gaurang
+    </div>
+
+ 
+
+    <div class="credit">g</div>
+    
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

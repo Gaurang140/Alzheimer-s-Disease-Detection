@@ -20,6 +20,21 @@ import sys
 
 
 
+# Retrieve the command-line arguments
+activation = str(sys.argv[1])
+optimizer = str(sys.argv[2])
+batch_size = int(sys.argv[3])
+dropout_rate = float(sys.argv[4])
+epochs = int(sys.argv[5])
+use_early_stopping = sys.argv[6]
+load_weights = sys.argv[7]
+use_lr_scheduler = sys.argv[8]
+
+
+
+
+
+
 try :
     #data ingestion
     training_pipeline_config = TrainingPipelineConfig()
@@ -47,7 +62,16 @@ try :
 
             model_trainer_config = ModelTrainerConfig()
             model_trainer = ModelTrainer(model_trainer_config=model_trainer_config, data_ingestion_artifact=data_ingestion_artifact)
-            model_trainer_artifact = model_trainer.initiate_model_training()
+            model_trainer_artifact =model_trainer.initiate_model_trainer(
+                                                        activation=activation,
+                                                        optimizer=optimizer,
+                                                        dropout_rate=dropout_rate,
+                                                        epochs=epochs,
+                                                        batch_size=batch_size,
+                                                        use_early_stopping=use_early_stopping,
+                                                        load_weights=load_weights,
+                                                        use_lr_scheduler=use_lr_scheduler,
+                                                        )
 
 
 

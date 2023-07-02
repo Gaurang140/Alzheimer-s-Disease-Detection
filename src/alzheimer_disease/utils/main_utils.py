@@ -22,6 +22,10 @@ import base64
 load_dotenv()
 # Get the MongoDB connection URI from the environment variable
 
+import ssl
+
+# Disable SSL verification
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def dump_data_to_mongodb(database_name, data_folder_path, train_collection_name, test_collection_name):
     """
@@ -52,7 +56,7 @@ def dump_data_to_mongodb(database_name, data_folder_path, train_collection_name,
         logging.info("Data dumped successfully to MongoDB.")
     except Exception as e:
         logging.exception("Failed to dump data to MongoDB.")
-        raise AlzException(e)
+        raise AlzException(e,sys)
 
 def process_folder(folder_path, db, collection_name):
     # Iterate over class folders
@@ -213,7 +217,7 @@ def create_datasets(train_path, test_path, image_size, batch_size, validation_sp
 
     resize_and_rescale = tf.keras.Sequential([
         tf.keras.layers.Resizing(image_size[0], image_size[1]),
-        tf.keras.layers.Rescaling(1./255)
+    tf.keras.layers.Rescaling(1./255)
     ])
 
       # Preprocess and cache the training dataset
@@ -249,13 +253,8 @@ def create_callbacks(checkpoint_filepath, patience):
         verbose=1
     )
     
-    early_stopping_callback = EarlyStopping(
-        monitor='val_loss',
-        patience=patience,
-        verbose=1
-    )
-    
-    callbacks = [model_checkpoint_callback, early_stopping_callback]
+   
+    callbacks = [model_checkpoint_callback]
     
     return callbacks
 

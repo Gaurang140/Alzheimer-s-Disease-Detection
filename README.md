@@ -38,7 +38,6 @@
 
 ## Infrastructure Required
 
-- AWS S3: Storage for data and files
 - AWS EC2: Scalable virtual servers for hosting and running the application
 - AWS ECR: Container registry for storing Docker images
 - Git Actions: Continuous integration and delivery automation tool
@@ -50,7 +49,7 @@ Before running the project, please ensure that you have the following prerequisi
 
 1. **MongoDB**: Make sure you have MongoDB installed on your local system, along with MongoDB Compass for data storage. You can download MongoDB from the official website and follow the installation instructions.
 
-2. **AWS Account**: You will need an AWS account to access services like AWS S3, AWS ECR, and AWS EC2 instances. If you don't have an AWS account, you can create one on the AWS website.
+2. **AWS Account**: You will need an AWS account to access services like  AWS ECR, and AWS EC2 instances. If you don't have an AWS account, you can create one on the AWS website.
 
 Once you have the prerequisites set up, follow these steps to run the project:
 ## step 1: Clone repository
