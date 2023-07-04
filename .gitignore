@@ -129,9 +129,6 @@ dmypy.json
 .pyre/
 alzenv/
 data/
-artifacts/
 checkpoints/
-models/
-/artifacts
 /mlruns
 mlruns/
