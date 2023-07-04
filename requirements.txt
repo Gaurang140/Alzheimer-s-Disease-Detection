@@ -16,4 +16,5 @@ Flask-Cors
 pymongo
 mlflow
 uvicorn
+python-dotenv
 -e .
