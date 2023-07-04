@@ -15,4 +15,5 @@ scikit-learn
 Flask-Cors
 pymongo
 mlflow
+uvicorn
 -e .
