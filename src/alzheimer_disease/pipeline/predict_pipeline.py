@@ -22,10 +22,10 @@ class PredictPipeline:
         model = load_model(model_resolver.get_latest_model_path())
 
         # Define the class names
-        class_names = ['Final AD JPEG', 'Final CN JPEG', 'Final EMCI JPEG', 'Final LMCI JPEG', 'Final MCI JPEG']
+        class_names = ['MildDemented', 'ModerateDemented', 'NonDemented', 'VeryMildDemented']
 
         # Load and preprocess the test image
-        test_image = image.load_img(self.filename, target_size=(35, 35))
+        test_image = image.load_img(self.filename, target_size=(35 , 35))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
         test_image = test_image / 255.0
@@ -36,4 +36,5 @@ class PredictPipeline:
         predicted_class = class_names[predicted_class_index]
         confidence = round(100 * np.max(predictions[0]), 2)
 
-        return [{"image_class": predicted_class, "confidence": confidence}]
+        return [{"image_class": predicted_class}]
+

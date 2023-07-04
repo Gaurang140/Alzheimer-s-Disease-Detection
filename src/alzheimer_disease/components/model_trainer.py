@@ -58,7 +58,7 @@ class ModelTrainer:
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dense(128, activation=activation),
             tf.keras.layers.Dropout(dropout_rate),
-            tf.keras.layers.Dense(5, activation='softmax')
+            tf.keras.layers.Dense(4, activation='softmax')
         ])
 
         return model
@@ -73,8 +73,8 @@ class ModelTrainer:
                                   , activation=activation, dropout_rate=dropout_rate)
 
             model.compile(optimizer=self.model_trainer_config.optimizer,
-                          loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-                          metrics=['accuracy'])
+                          loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
+                          metrics=[tf.keras.metrics.AUC(name='auc')])
 
             callbacks = []
             callbacks += create_callbacks(self.model_trainer_config.checkpoint_dir, patience=self.model_trainer_config.patience)

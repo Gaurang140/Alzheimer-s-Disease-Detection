@@ -57,7 +57,7 @@ def trainRoute():
             exit_code = process.returncode
 
             if exit_code != 0:
-                error_message = error_message = "An error occurred while training the model: " #+ stderr.decode('utf-8').strip().split('\n')[-1]
+                error_message = error_message = "An error occurred while training the model: " +stderr.decode('utf-8').strip().split('\n')[-1]
                 return render_template('error_hyperparameter.html', error_message=error_message)
 
             # Load the training result from the JSON file
@@ -97,7 +97,7 @@ def open_mlflow_ui():
 
 if __name__ == "__main__":
     clApp = ClientApp()
-    app.run(host='0.0.0.0', port=8080,debug=True) #local host
+    app.run() #local host
    # app.run(host='0.0.0.0', port=80,debug=True) #for AZURE
 
 

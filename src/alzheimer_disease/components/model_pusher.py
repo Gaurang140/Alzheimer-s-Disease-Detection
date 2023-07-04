@@ -23,8 +23,8 @@ class ModelPusher:
 
     def initiate_model_pusher(self,)->artifacts_entity.ModelPusherArtifact:
         try:
-            #load object
-            logging.info(f"Loading transformer model and target encoder")
+            
+         
         
             model = load_object(file_path=self.model_trainer_artifact.model_dir)
            

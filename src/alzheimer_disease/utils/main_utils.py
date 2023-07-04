@@ -189,7 +189,9 @@ def create_datasets(train_path, test_path, image_size, batch_size, validation_sp
         image_size=image_size,
         batch_size=batch_size,
         validation_split=validation_split,
-        subset="training"
+        subset="training",
+         labels="inferred",
+         label_mode="categorical",
     )
 
     # Create validation dataset with validation split
@@ -200,7 +202,11 @@ def create_datasets(train_path, test_path, image_size, batch_size, validation_sp
         image_size=image_size,
         batch_size=batch_size,
         validation_split=validation_split,
-        subset="validation"
+        subset="validation",
+        labels="inferred",
+         label_mode="categorical",
+     
+
     )
 
     # Create test dataset
@@ -209,8 +215,11 @@ def create_datasets(train_path, test_path, image_size, batch_size, validation_sp
         seed=12,
         shuffle=True,
         image_size=image_size,
-        batch_size=batch_size
-    )
+        batch_size=batch_size,
+        labels="inferred",
+         label_mode="categorical",
+        )
+    
 
     # Get the class names from the training dataset
     class_names = train_dataset.class_names
@@ -283,7 +292,7 @@ def evaluate_model(model, test_ds, class_names, output_file, expected_score, ove
     for images, labels in test_ds:
         predictions = model.predict(images)
         predicted_labels = tf.argmax(predictions, axis=1).numpy()
-        y_true.extend(labels.numpy())
+        y_true.extend(tf.argmax(labels, axis=1).numpy())  # Convert categorical labels to integer labels
         y_pred.extend(predicted_labels)
 
     # Generate classification report

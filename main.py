@@ -19,7 +19,7 @@ from alzheimer_disease.exception import AlzException
 import sys
 
 
-
+"""
 # Retrieve the command-line arguments
 activation = str(sys.argv[1])
 optimizer = str(sys.argv[2])
@@ -29,8 +29,15 @@ epochs = int(sys.argv[5])
 use_early_stopping = sys.argv[6]
 load_weights = sys.argv[7]
 use_lr_scheduler = sys.argv[8]
-
-
+"""
+activation = "relu"
+optimizer = "adam"
+batch_size = 32
+dropout_rate = 0.1
+epochs = 2
+use_early_stopping = False
+load_weights = False
+use_lr_scheduler = False
 
 
 
