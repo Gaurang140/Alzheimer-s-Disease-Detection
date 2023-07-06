@@ -132,3 +132,10 @@ data/
 checkpoints/
 /mlruns
 mlruns/
+/artifacts
+artifacts/
+/saved_models
+saved_models/
+
+
+
