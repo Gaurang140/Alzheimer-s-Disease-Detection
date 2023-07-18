@@ -20,7 +20,8 @@
 
 ## Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/VzRCK9JzmP8/0.jpg)](https://www.youtube-nocookie.com/embed/VzRCK9JzmP8)
+[![Demo Video](https://img.youtube.com/vi/VzRCK9JzmP8/maxresdefault.jpg)](https://www.youtube-nocookie.com/embed/VzRCK9JzmP8)
+
 
 
 
