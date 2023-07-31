@@ -82,9 +82,7 @@ pip install -r requirements.txt
 ## step 4: Set environment variables
 
 ```bash	
-set AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
-set AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
-set AWS_DEFAULT_REGION=<AWS_DEFAULT_REGION>
+
 set MONGODB_URL="mongodb+srv://<username>:<password>@cluster0.ogtv1f4.mongodb.net/?retryWrites=true&w=majority"
 
 ```
